@@ -209,16 +209,17 @@ python -m researcher          # modo continuo (cada RESEARCHER_SCHEDULE_INTERVAL
 
 ### Variables de entorno del Researcher
 
-| Variable                       | Por defecto              |
-|--------------------------------|--------------------------|
-| `POSTGRES_HOST`                | `localhost`              |
-| `POSTGRES_USER`                | `peru_user`              |
-| `POSTGRES_PASSWORD`            | `peru_password`          |
-| `POSTGRES_DB`                  | `peru_elecciones`        |
-| `SEARXNG_URL`                  | `http://localhost:8080`  |
-| `OLLAMA_URL`                   | `http://localhost:11434` |
-| `SUMMARIZATION_MODEL`          | `granite4:latest`        |
-| `RESEARCHER_SCHEDULE_INTERVAL` | `3600` (segundos)        |
+| Variable                       | Por defecto                    |
+|--------------------------------|--------------------------------|
+| `POSTGRES_HOST`                | `localhost`                    |
+| `POSTGRES_USER`                | `peru_user`                    |
+| `POSTGRES_PASSWORD`            | `peru_password`                |
+| `POSTGRES_DB`                  | `peru_elecciones`              |
+| `SEARXNG_URL`                  | `http://localhost:8080`        |
+| `OPENROUTER_API_KEY`          | ``                              |
+| `OPENROUTER_BASE_URL`          | `https://openrouter.ai/api/v1` |
+| `SUMMARIZATION_MODEL`          | `granite4:latest`              |
+| `RESEARCHER_SCHEDULE_INTERVAL` | `3600` (segundos)              |
 
 ## Servicio OCR
 
