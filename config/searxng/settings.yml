@@ -1,0 +1,11 @@
+use_default_settings: true
+
+server:
+  secret_key: "CHANGE_THIS_SECRET_KEY"
+  bind_address: "0.0.0.0:8080"
+  limiter: false
+
+search:
+  formats:
+    - html
+    - json

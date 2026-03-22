@@ -1,0 +1,71 @@
+services:
+  
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config/searxng:/etc/searxng:rw
+      - searxng_data:/var/log/searxng:rw
+    environment:
+      - SEARXNG_HOSTNAME=localhost
+    restart: unless-stopped
+
+  ocr:
+    build:
+      context: ./ocr
+      dockerfile: Dockerfile
+    container_name: tesseract-ocr
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: peru_elecciones
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./db/migrations/seed_parties.sql:/docker-entrypoint-initdb.d/02_seed_parties.sql:ro
+      - ./db/migrations/seed_topics.sql:/docker-entrypoint-initdb.d/03_seed_topics.sql:ro
+      - ./db/migrations/seed_candidates.sql:/docker-entrypoint-initdb.d/04_seed_candidates.sql:ro
+      - ./db/migrations/seed_party_sections.sql:/docker-entrypoint-initdb.d/05_seed_party_sections.sql:ro
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d peru_elecciones" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+#  frontend:
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    container_name: frontend
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      POSTGRES_HOST: postgres
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: password
+#      POSTGRES_DB: peru_elecciones
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#    restart: unless-stopped
+
+volumes:
+  searxng_data:
+  postgres_data:
